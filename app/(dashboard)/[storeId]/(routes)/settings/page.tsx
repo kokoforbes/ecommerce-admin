@@ -3,15 +3,9 @@ import { auth } from "@clerk/nextjs/server";
 
 import prismadb from "@/lib/prismadb";
 
-import Navbar from "@/components/navbar";
+import { SettingsForm } from "./components/settings-form";
 
-export default async function DashboardLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { storeId: string };
-}) {
+const SettingsPage = async ({ params }: { params: { storeId: string } }) => {
   const { userId } = await auth();
 
   if (!userId) {
@@ -30,9 +24,12 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className='relative'>
-      <Navbar />
-      <div>{children}</div>
+    <div className='flex-col mx-auto max-w-7xl'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <SettingsForm initialData={store} />
+      </div>
     </div>
   );
-}
+};
+
+export default SettingsPage;
