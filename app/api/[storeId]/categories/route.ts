@@ -57,24 +57,22 @@ export async function POST(
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ storeId: string }> }
+  { params }: { params: { storeId: string } }
 ) {
   try {
-    const { storeId } = await params;
-
-    if (!storeId) {
-      return new NextResponse("Store Id is required", { status: 400 });
+    if (!params.storeId) {
+      return new NextResponse("Store id is required", { status: 400 });
     }
 
     const categories = await prismadb.category.findMany({
       where: {
-        storeId: storeId,
+        storeId: params.storeId,
       },
     });
 
     return NextResponse.json(categories);
-  } catch (err) {
-    console.log(`[CATEGORIES_GET] ${err}`);
-    return new NextResponse(`Internal error`, { status: 500 });
+  } catch (error) {
+    console.log("[CATEGORIES_GET]", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
 }
