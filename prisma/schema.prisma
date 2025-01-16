@@ -18,6 +18,7 @@ model Store {
   colors          Color[]     @relation("StoreToColor")
   products        Product[]  @relation("StoreToProduct")
   orders          Order[]     @relation("StoreToOrder")
+  messages  Message[] @relation("StoreToMessage")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -149,4 +150,18 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+
+model Message {
+  id          String    @id @default(uuid())
+  storeId     String   // Optional, if the message is related to a store
+ store       Store     @relation("StoreToMessage", fields: [storeId], references: [id])
+  senderId    String    // Foreign Key for sender
+  content     String    // Message content
+  isRead      Boolean   @default(false) // Read status
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
 }
