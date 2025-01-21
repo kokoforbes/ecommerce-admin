@@ -5,6 +5,9 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import axios from "axios";
+
+import { useParams, useRouter } from "next/navigation";
 
 interface MessageProps {
   id: string;
@@ -21,8 +24,25 @@ interface MessageCard {
 }
 
 const MessageCard: React.FC<MessageCard> = ({ data }) => {
+  const params = useParams();
+  const router = useRouter();
+
+  const updateStatus = async () => {
+    const status = {
+      ...data,
+      isRead: !data.isRead,
+    };
+
+    // Update message status
+    await axios
+      .patch(`/api/${params.storeId}/messages/${data.id}`, status)
+      .then((res) => {
+        if (res.status === 200) router.refresh();
+      });
+  };
+
   return (
-    <div onClick={() => {}} className='p-3 space-y-4'>
+    <div className='p-3 space-y-4'>
       <Card>
         <CardHeader></CardHeader>
         <CardContent className='grid gap-4'>
@@ -48,7 +68,7 @@ const MessageCard: React.FC<MessageCard> = ({ data }) => {
             <Button variant='outline' size='sm'>
               Reply
             </Button>
-            <Button variant='outline' size='sm'>
+            <Button variant='outline' size='sm' onClick={updateStatus}>
               Mark as {data.isRead ? "Unread" : "Read"}
             </Button>
             <Button variant='outline' size='sm'>

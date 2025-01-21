@@ -34,7 +34,9 @@ export async function PATCH(
     const body = await req.json();
     const { storeId, messageId } = await params;
 
-    const { name, subject, email, content } = body;
+    console.log("[PATCH]", body);
+
+    const { name, subject, email, content, isRead } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -69,7 +71,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const size = await prismadb.message.updateMany({
+    const message = await prismadb.message.updateMany({
       where: {
         id: messageId,
       },
@@ -78,10 +80,11 @@ export async function PATCH(
         subject,
         email,
         content,
+        isRead,
       },
     });
 
-    return NextResponse.json(size);
+    return NextResponse.json(message);
   } catch (err) {
     console.log("MESSAGE_PATCH]", err);
     return new NextResponse("Internal error", { status: 500 });
