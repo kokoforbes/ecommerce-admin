@@ -34,8 +34,6 @@ export async function PATCH(
     const body = await req.json();
     const { storeId, messageId } = await params;
 
-    console.log("[PATCH]", body);
-
     const { name, subject, email, content, isRead } = body;
 
     if (!userId) {

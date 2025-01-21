@@ -37,6 +37,8 @@ const MessageCard: React.FC<MessageCard> = ({ data }) => {
   const [loading, setLoading] = useState(false);
 
   const updateStatus = async () => {
+    setLoading(true);
+
     try {
       const status = {
         ...data,
@@ -52,16 +54,22 @@ const MessageCard: React.FC<MessageCard> = ({ data }) => {
       toast.success("Status updated");
     } catch (error: any) {
       toast.error("Something went wrong.", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const onDelete = async () => {
+    setLoading(true);
+
     try {
       await axios.delete(`/api/${params.storeId}/messages/${data.id}`);
       router.refresh();
       toast.success("Message deleted successfully.");
     } catch (error: any) {
       toast.error("Something went wrong.", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,7 +83,7 @@ const MessageCard: React.FC<MessageCard> = ({ data }) => {
       />
 
       <div className='p-3 space-y-4'>
-        <Card>
+        <Card className='max-w-md'>
           <CardHeader></CardHeader>
           <CardContent className='grid gap-4'>
             <div className='flex justify-between items-center mb-2'>
@@ -93,7 +101,7 @@ const MessageCard: React.FC<MessageCard> = ({ data }) => {
             <p className='text-sm text-gray-600 mb-2'>From: {data.name}</p>
             <p className='text-sm text-gray-600 mb-2'>Email: {data.email}</p>
             <p className='text-sm text-gray-600 mb-2'>Date: {data.createdAt}</p>
-            <p className='mt-2'>{data.content}</p>
+            <p className='mt-2 '>{data.content}</p>
           </CardContent>
           <CardFooter>
             <div className='mt-4 space-x-2'>
