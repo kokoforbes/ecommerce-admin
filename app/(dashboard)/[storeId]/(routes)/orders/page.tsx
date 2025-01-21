@@ -26,14 +26,6 @@ const OrdersPage = async ({
     },
   });
 
-  const orderss = await prismadb.order.findMany({
-    where: {
-      storeId: storeId,
-    },
-  });
-
-  console.log(orderss);
-
   const formattedOrders: OrderColumn[] = orders.map((item) => ({
     id: item.id,
     phone: item.phone,

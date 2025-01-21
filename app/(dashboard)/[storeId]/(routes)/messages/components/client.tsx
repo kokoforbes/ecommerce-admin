@@ -5,55 +5,20 @@ import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 import MessageCard from "./message-card";
 
-const messages = [
-  {
-    id: 1,
-    from: "customer@example.com",
-    subject: "Return Request",
-    content: "I would like to return my recent purchase.",
-    date: "2023-05-15",
-    status: "Unread",
-  },
-
-  {
-    id: 2,
-    from: "customer@example.com",
-    subject: "Return Request",
-    content: "I would like to return my recent purchase.",
-    date: "2023-05-15",
-    status: "Unread",
-  },
-  {
-    id: 3,
-    from: "customer@example.com",
-    subject: "Return Request",
-    content: "I would like to return my recent purchase.",
-    date: "2023-05-15",
-    status: "Unread",
-  },
-  {
-    id: 4,
-    from: "customer@example.com",
-    subject: "Return Request",
-    content: "I would like to return my recent purchase.",
-    date: "2023-05-15",
-    status: "Unread",
-  },
-  {
-    id: 5,
-    from: "customer@example.com",
-    subject: "Return Request",
-    content: "I would like to return my recent purchase.",
-    date: "2023-05-15",
-    status: "Unread",
-  },
-];
-
-interface SizeClientProps {
-  data: [];
+interface MessageProps {
+  id: string;
+  name: string;
+  subject: string;
+  content: string;
+  email: string;
+  createdAt: string;
+  isRead: boolean;
+}
+interface MessageClientProps {
+  data: MessageProps[];
 }
 
-export const SizeClient: React.FC<SizeClientProps> = ({ data }) => {
+export const MessageClient: React.FC<MessageClientProps> = ({ data }) => {
   return (
     <>
       <div className='flex items-center justify-between'>
@@ -64,7 +29,7 @@ export const SizeClient: React.FC<SizeClientProps> = ({ data }) => {
       </div>
       <Separator />
       <div className='flex gap-4 flex-wrap'>
-        {messages.map((message) => (
+        {data.map((message) => (
           <MessageCard key={message.id} data={message} />
         ))}
       </div>

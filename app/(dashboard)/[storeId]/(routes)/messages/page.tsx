@@ -1,15 +1,15 @@
 import { format } from "date-fns";
 import prismadb from "@/lib/prismadb";
-import { SizeClient } from "./components/client";
-import { SizeColumn } from "./components/columns";
+import { MessageClient } from "./components/client";
 
-const SizesPage = async ({
+const MessagePage = async ({
   params,
 }: {
   params: Promise<{ storeId: string }>;
 }) => {
   const { storeId } = await params;
-  const sizes = await prismadb.size.findMany({
+
+  const messages = await prismadb.message.findMany({
     where: {
       storeId: storeId,
     },
@@ -18,20 +18,23 @@ const SizesPage = async ({
     },
   });
 
-  const formattedSizes: SizeColumn[] = sizes.map((item) => ({
+  const formattedMessages = messages.map((item) => ({
     id: item.id,
     name: item.name,
-    value: item.value,
+    content: item.content,
+    isRead: item.isRead,
+    email: item.email,
+    subject: item.subject,
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
 
   return (
     <div className='flex-col'>
       <div className='flex-1 p-8 pt-6 space-y-4'>
-        <SizeClient data={formattedSizes} />
+        <MessageClient data={formattedMessages} />
       </div>
     </div>
   );
 };
 
-export default SizesPage;
+export default MessagePage;

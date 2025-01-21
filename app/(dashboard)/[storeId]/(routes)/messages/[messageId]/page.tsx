@@ -1,25 +1,25 @@
 import prismadb from "@/lib/prismadb";
 import { MessageForm } from "./components/message-form";
 
-const SizePage = async ({
+const MessagePage = async ({
   params,
 }: {
-  params: Promise<{ sizeId: string }>;
+  params: Promise<{ messageId: string }>;
 }) => {
-  const { sizeId } = await params;
-  const size = await prismadb.size.findUnique({
+  const { messageId } = await params;
+  const message = await prismadb.message.findUnique({
     where: {
-      id: sizeId,
+      id: messageId,
     },
   });
 
   return (
     <div className='flex-col'>
       <div className='flex-1 p-8 pt-6 space-y-4'>
-        <MessageForm initialData={size} />
+        <MessageForm initialData={message} />
       </div>
     </div>
   );
 };
 
-export default SizePage;
+export default MessagePage;
